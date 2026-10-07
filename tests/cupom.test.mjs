@@ -124,6 +124,12 @@ describe("cupomDaVisita: a URL vence, a aba guarda", () => {
     assert.equal(a.dados.has(CHAVE_DO_CUPOM), false);
   });
 
+  test("?cupom= vazio também é a URL falando: não há cupom e o guardado é esquecido", () => {
+    const a = armazemDeTeste({ [CHAVE_DO_CUPOM]: "VELHO" });
+    assert.equal(cupomDaVisita("?cupom=", a), null);
+    assert.equal(a.dados.has(CHAVE_DO_CUPOM), false);
+  });
+
   test("sessionStorage bloqueado (lança) não quebra: a URL continua valendo", () => {
     const quebrado = {
       getItem() { throw new Error("SecurityError"); },
