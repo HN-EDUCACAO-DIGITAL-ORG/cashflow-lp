@@ -7,8 +7,6 @@ import { CheckCircle2, XCircle, ArrowUp, Plus, Sparkles, Gem, Flame, Crown, AtSi
 import * as PricingCard from "../ui/pricing-card";
 import { InteractiveTiltCard } from "../ui/tilt-card";
 import { Button, Container, Reveal, Section, SectionHeader, SplitWords } from "../ui/primitives";
-
-import { track } from "../ui/MetaPixel";
 import { CTA_PRIMARY_HREF, FAQ, PLANS } from "@/lib/data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -172,21 +170,22 @@ function PlanFeatureItems({ p, salesJump }: { p: Plan; salesJump: number | null 
 /**
  * CTA dos planos: fundo sólido, sem ícone. O Diamond usa o vermelho da marca
  * para se destacar entre os cartões brancos.
+ *
+ * O InitiateCheckout NÃO sai daqui: quem o conta é o script do CashFlow, pelo
+ * gatilho por URL configurado na oferta (as 4 URLs de `/assinatura?plano=`),
+ * com o mesmo `event_id` no navegador e no CAPI. Um `fbq('track')` aqui
+ * somaria um segundo IC, sem `event_id`, que a Meta não deduplica.
+ *
+ * `data-cashflow` faz o script levar `sck`/`utm_*`/`fbclid` ao checkout.
  */
 function PlanButton({ p }: { p: Plan }) {
   const external = p.href.startsWith("http");
   return (
     <a
       href={p.href}
+      data-cashflow=""
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      onClick={() =>
-        track("InitiateCheckout", {
-          content_name: p.name,
-          value: Number(p.monthly.replace(",", ".")),
-          currency: "BRL",
-        })
-      }
       className={clsx(
         "flex h-12 w-full items-center justify-center rounded-xl px-4 text-center text-[13px] font-bold leading-tight",
         "transition-[transform,background-color,box-shadow] duration-300 ease-out-expo active:scale-[0.98]",
@@ -414,7 +413,7 @@ export function FinalCta() {
             </Reveal>
             <Reveal delay={0.25}>
               <div className="mt-10 flex flex-col items-center gap-4">
-                <Button href={CTA_PRIMARY_HREF} size="lg" event="ViewContent" eventParams={{ content_name: "final_cta" }}>
+                <Button href={CTA_PRIMARY_HREF} size="lg">
                   Quero começar agora
                 </Button>
               </div>

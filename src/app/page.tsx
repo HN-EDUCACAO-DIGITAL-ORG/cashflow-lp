@@ -13,10 +13,12 @@ import { Manifesto, Pricing, Faq, FinalCta } from "@/components/sections/Closing
 import { Features } from "@/components/sections/Features";
 import { LampGlow } from "@/components/ui/lamp";
 import { CinematicFooter } from "@/components/ui/motion-footer";
+import { ScriptDoCashflow } from "@/components/ui/ScriptDoCashflow";
 
 export default function Page() {
   return (
     <main className="relative">
+      <ScriptDoCashflow />
       <Nav />
       <Hero />
       <Pillars />

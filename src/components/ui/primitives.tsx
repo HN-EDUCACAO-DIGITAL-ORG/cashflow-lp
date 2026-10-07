@@ -6,7 +6,6 @@ import clsx from "clsx";
 import { User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { track } from "./MetaPixel";
 import { useImageOk } from "@/lib/use-image-ok";
 import { AntiMetalBlock } from "./anti-metal-button";
 
@@ -196,16 +195,12 @@ export function Button({
   variant = "primary",
   size = "md",
   className,
-  event,
-  eventParams,
 }: {
   href: string;
   children: ReactNode;
   variant?: "primary" | "ghost" | "white";
   size?: "sm" | "md" | "lg";
   className?: string;
-  event?: string;
-  eventParams?: Record<string, unknown>;
 }) {
   const external = href.startsWith("http");
   const { h, block, text } = SIZES[size];
@@ -215,7 +210,6 @@ export function Button({
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      onClick={() => event && track(event, eventParams)}
       style={{ height: h, paddingLeft: block + 18, paddingRight: 20 }}
       className={clsx(
         "group/btn relative inline-flex items-center overflow-hidden rounded-xl border font-medium tracking-tight",

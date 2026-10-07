@@ -84,7 +84,7 @@ export function Features() {
 
         <Reveal delay={0.2}>
           <div className="mt-12 flex justify-center">
-            <Button href={CTA_PRIMARY_HREF} size="lg" event="ViewContent" eventParams={{ content_name: "features_cta" }}>
+            <Button href={CTA_PRIMARY_HREF} size="lg">
               QUERO GARANTIR MEU ACESSO
             </Button>
           </div>

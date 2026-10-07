@@ -72,7 +72,7 @@ export function VideoDemo() {
 
         <Reveal delay={0.24}>
           <div className="mt-10 flex justify-center">
-            <Button href={CTA_PRIMARY_HREF} size="lg" event="ViewContent" eventParams={{ content_name: "video_cta" }}>
+            <Button href={CTA_PRIMARY_HREF} size="lg">
               QUERO GARANTIR MEU ACESSO
             </Button>
           </div>

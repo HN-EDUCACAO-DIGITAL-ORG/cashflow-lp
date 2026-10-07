@@ -77,12 +77,7 @@ export function Hero() {
           transition={{ duration: 0.9, delay: 1.15, ease: [0.16, 1, 0.3, 1] }}
           className="mt-7 flex flex-col items-center justify-center gap-2 sm:mt-10 sm:flex-row sm:items-start sm:justify-start sm:gap-3"
         >
-          <Button
-            href={CTA_PRIMARY_HREF}
-            size="lg"
-            event="ViewContent"
-            eventParams={{ content_name: "hero_cta" }}
-          >
+          <Button href={CTA_PRIMARY_HREF} size="lg">
             Quero garantir meu acesso
           </Button>
           <a
