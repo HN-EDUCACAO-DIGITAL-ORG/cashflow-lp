@@ -1,13 +1,15 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { CheckCircle2, XCircle, ArrowUp, Plus, Sparkles, Gem, Flame, Crown, AtSign } from "lucide-react";
 import * as PricingCard from "../ui/pricing-card";
 import { InteractiveTiltCard } from "../ui/tilt-card";
 import { Button, Container, Reveal, Section, SectionHeader, SplitWords } from "../ui/primitives";
 import { CTA_PRIMARY_HREF, FAQ, PLANS } from "@/lib/data";
+import { planoPedido } from "@/lib/cupom";
+import { useCupomNoLink } from "@/lib/use-cupom-no-link";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -176,12 +178,18 @@ function PlanFeatureItems({ p, salesJump }: { p: Plan; salesJump: number | null 
  * com o mesmo `event_id` no navegador e no CAPI. Um `fbq('track')` aqui
  * somaria um segundo IC, sem `event_id`, que a Meta não deduplica.
  *
- * `data-cashflow` faz o script levar `sck`/`utm_*`/`fbclid` ao checkout.
+ * `data-cashflow` faz o script levar `sck`/`utm_*`/`fbclid` ao checkout, e o
+ * cupom da indicação entra pelo `useCupomNoLink` (ver o porquê lá). O `href`
+ * renderizado é sempre o do plano, para o HTML do servidor e o do cliente
+ * serem iguais.
  */
 function PlanButton({ p }: { p: Plan }) {
   const external = p.href.startsWith("http");
+  const link = useRef<HTMLAnchorElement>(null);
+  useCupomNoLink(link);
   return (
     <a
+      ref={link}
       href={p.href}
       data-cashflow=""
       target={external ? "_blank" : undefined}
@@ -293,9 +301,24 @@ function MasterCard({ p }: { p: Plan }) {
   );
 }
 
+/** Altura do menu fixo: a mesma folga que o Lenis usa nas âncoras. */
+const FOLGA_DO_MENU = 80;
+
 export function Pricing() {
   const top = PLANS.filter((p) => p.id !== "master");
   const master = PLANS.find((p) => p.id === "master");
+
+  /*
+    O link de indicação com plano (`/?cupom=X&plano=gold`) chega aqui: a página
+    rola até os planos e mais nada. O plano NÃO vai para os links, porque cada
+    botão já leva o seu, e um valor fora dos 4 planos é ignorado.
+  */
+  useEffect(() => {
+    if (!planoPedido(window.location.search)) return;
+    const secao = document.getElementById("planos");
+    if (!secao) return;
+    window.scrollTo({ top: secao.getBoundingClientRect().top + window.scrollY - FOLGA_DO_MENU });
+  }, []);
 
   return (
     <Section id="planos" className="!pt-0">
