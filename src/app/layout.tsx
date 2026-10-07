@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
-import { MetaPixel } from "@/components/ui/MetaPixel";
 
 // Self-hosted variable fonts (no external requests, better LCP)
 const manrope = localFont({
@@ -62,7 +61,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" className={`${manrope.variable} ${geistMono.variable} h-full`}>
       <body className="min-h-full flex flex-col grain">
         <SmoothScroll>{children}</SmoothScroll>
-        <MetaPixel />
       </body>
     </html>
   );

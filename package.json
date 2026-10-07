@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/cupom.test.mjs",
+    "test:build": "next build && node --test tests/html-do-build.test.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
